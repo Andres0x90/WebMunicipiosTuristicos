@@ -4,9 +4,7 @@
     Author     : Andres
 --%>
 
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.SQLException"%>
-<%@page import="modelo.Conexion"%>
+<%@page import="controlador.Controlador"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -37,7 +35,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Visitante</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="login.jsp">Ingresar</a></li>
                                 <li><a class="dropdown-item" href="registrar.jsp">Registrarse</a></li>
@@ -50,14 +48,52 @@
         <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-                <h1>A Bootstrap 5 Starter Template</h1>
-                <p class="lead">A complete project boilerplate built with Bootstrap</p>
-                <p>Bootstrap v5.0.1</p>
+                <h1>Crea una nueva cuenta</h1>
+                <p class="lead">Accede a zonas restringidas</p>
+                <form class="row col-md-6 g-3 mx-auto my-3 " action="registrar.jsp" method="POST">
+                    <div class="col-md-6">
+                      <label for="cuenta" class="form-label" >Nombre de la cuenta</label>
+                      <input type="text" class="form-control text-center" name="cuenta" id="cuenta">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="clave" class="form-label ">Contraseña</label>
+                      <input type="password" class="form-control text-center" name="clave" id="clave">
+                    </div>
+                    <div class="col-12">
+                      <label for="nombre" class="form-label">Nombres</label>
+                      <input type="text" class="form-control text-center" name="nombre" id="nombre">
+                    </div>
+                    <div class="col-12">
+                      <label for="apellido" class="form-label">Apellidos</label>
+                      <input type="text" class="form-control text-center" name="apellido" id="apellido">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" name="action" value="registrar" onclick="return comprobar()" class="btn btn-dark">Registrarse</button>
+                    </div>
+                    <% if (request.getMethod().equalsIgnoreCase("POST") && request.getParameter("action").equalsIgnoreCase("registrar")){ 
+                            if (Controlador.crearUsuario(request.getParameter("cuenta"), request.getParameter("clave"), 
+                                    request.getParameter("nombre"), request.getParameter("apellido"))){
+                    %>
+                    
+                    <div class="col-12">
+                        <div class="alert alert-success" role="alert">
+                            Usuario registrado correctamente
+                        </div>
+                    </div>
+                    <% } else { %>
+                    <div class="col-12">
+                        <div class="alert alert-danger" role="alert">
+                            Ocurrio un error al registrar el usuario en la base de datos
+                        </div>
+                    </div>
+                    <% } } %>
+                 </form>
             </div>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script src="js/comprobarRegistrar.js"></script>
     </body>
 </html>
