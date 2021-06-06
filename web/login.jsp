@@ -5,6 +5,9 @@
 --%>
 
 <%@page import="controlador.Controlador"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="modelo.Conexion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -14,12 +17,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Registrar usuario - Municipios Turisticos de Antioquia</title>
+        <title>Login - Municipios Turisticos de Antioquia</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
 
     </head>
     <body>
@@ -36,20 +38,20 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                
                                 <li><a class="dropdown-item" href="#"><% 
                                     if (session.getAttribute("usuario") != null)
                                         out.print(session.getAttribute("usuario"));
                                     else
                                         out.print("Visitante");
                                          %></a></li>
-                                        
-                                <li><hr class="dropdown-divider" /></li>
-                               
+                                         
+                                <li><hr class="dropdown-divider" /></li>                               
                                 <%if (session.getAttribute("usuario") != null){ %>
                                         <li><a class="dropdown-item" href="municipiosRegistrados.jsp">Ver aportes</a></li>
                                         <li><a class="dropdown-item" href="registrarMunicipio.jsp">Registrar municipio</a></li>
-                                        <li><a class="dropdown-item" href="index.jsp?action=logout">Salir</a></li>
 
+                                        <li><a class="dropdown-item" href="index.jsp?action=logout">Salir</a></li>
                                   <% }else{ %>
                                         <li><a class="dropdown-item" href="login.jsp">Ingresar</a></li>
                                         <li><a class="dropdown-item" href="registrar.jsp">Registrarse</a></li>
@@ -63,60 +65,43 @@
         <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-                <h1>Crea una nueva cuenta</h1>
+                <h1>Entrar a tu cuenta</h1>
                 <p class="lead">Accede a zonas restringidas</p>
-                
-                 <% if(session.getAttribute("usuario") != null){  %>
+                <% if(session.getAttribute("usuario") != null){  %>
                         <div class="alert alert-success" role="alert">
                             Ya cuenta con una sesion iniciada                    
                         </div>
-                <%} else { %>  
-                    <form class="row col-md-6 g-3 mx-auto my-3 " action="registrar.jsp" method="POST">
-                        <div class="col-md-6">
-                          <label for="cuenta" class="form-label" >Nombre de la cuenta</label>
-                          <input type="text" class="form-control text-center" name="cuenta" id="cuenta">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="clave" class="form-label ">Contraseña</label>
-                          <input type="password" class="form-control text-center" name="clave" id="clave">
-                        </div>
-                        <div class="col-12">
-                          <label for="nombre" class="form-label">Nombres</label>
-                          <input type="text" class="form-control text-center" name="nombre" id="nombre">
-                        </div>
-                        <div class="col-12">
-                          <label for="apellido" class="form-label">Apellidos</label>
-                          <input type="text" class="form-control text-center" name="apellido" id="apellido">
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" name="action" value="registrar" onclick="return comprobar()" class="btn btn-dark">Registrarse</button>
-                        </div>
-                        <% if (request.getMethod().equalsIgnoreCase("POST") && request.getParameter("action").equalsIgnoreCase("registrar")){ 
-                                if (Controlador.crearUsuario(request.getParameter("cuenta"), request.getParameter("clave"), 
-                                        request.getParameter("nombre"), request.getParameter("apellido"))){
-                        %>
-
-                        <div class="col-12">
+                <%} else { %>
+                    <form class="row col-md-4 mx-auto my-4" action="login.jsp" method="POST">
+                          <div class="mb-3">
+                            <label for="usuario" class="form-label" >Usuario</label>
+                            <input type="text" class="form-control" name="cuenta" id="cuenta">
+                          </div>
+                          <div class="mb-3">
+                            <label for="clave" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="clave" id="clave">
+                          </div>
+                          <% if (request.getMethod().equalsIgnoreCase("POST")){ 
+                                if (Controlador.acceder(request.getParameter("cuenta"), request.getParameter("clave"))){
+                                    session.setAttribute("usuario", request.getParameter("cuenta"));  
+                                    response.sendRedirect("index.jsp");
+                          %>
                             <div class="alert alert-success" role="alert">
-                                Usuario registrado correctamente
+                                Sesion creada exitosamente                    
                             </div>
-                        </div>
-                        <% } else { %>
-                        <div class="col-12">
+                          <% }else{ %>
                             <div class="alert alert-danger" role="alert">
-                                Ocurrio un error al registrar el usuario en la base de datos
+                                Usuario o contraseña incorrectos                    
                             </div>
-                        </div>
-                        <% } } %>
-                     </form>
-                 <% } %>
-                 
+                            <% }} %>
+                            <button type="submit" name="action" value="ingresar" onclick="return comprobar()" class="btn btn-dark ">Ingresar</button>
+                        </form>
+                    <% } %>
             </div>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Core theme JS-->
-
-        <script src="js/comprobarRegistrar.js"></script>
+        <script src="js/comprobarLogin.js"></script>
     </body>
 </html>

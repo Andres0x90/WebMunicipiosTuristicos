@@ -25,6 +25,11 @@
     </head>
     <body>
         <!-- Responsive navbar-->
+        <% if (request.getParameter("action") != null && request.getParameter("action").equalsIgnoreCase("logout")
+                && session.getAttribute("usuario") != null){
+            session.removeAttribute("usuario");
+        }    
+        %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <img src="imgs/bandera.png" width="2%" class="m-2"/>
@@ -37,10 +42,23 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#"><% 
+                                    if (session.getAttribute("usuario") != null)
+                                        out.print(session.getAttribute("usuario"));
+                                    else
+                                        out.print("Visitante");
+                                         %></a></li>
+                                        
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="login.jsp">Ingresar</a></li>
-                                <li><a class="dropdown-item" href="registrar.jsp">Registrarse</a></li>
+                               
+                                <%if (session.getAttribute("usuario") != null){ %>
+                                        <li><a class="dropdown-item" href="municipiosRegistrados.jsp">Ver aportes</a></li>
+                                        <li><a class="dropdown-item" href="registrarMunicipio.jsp">Registrar municipio</a></li>
+                                        <li><a class="dropdown-item" href="index.jsp?action=logout">Salir</a></li>
+                                  <% }else{ %>
+                                        <li><a class="dropdown-item" href="login.jsp">Ingresar</a></li>
+                                        <li><a class="dropdown-item" href="registrar.jsp">Registrarse</a></li>
+                                  <% } %>
                             </ul>
                         </li>
                     </ul>
@@ -58,6 +76,5 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
     </body>
 </html>

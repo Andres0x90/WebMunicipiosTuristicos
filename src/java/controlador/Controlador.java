@@ -33,4 +33,26 @@ public class Controlador
             return false;
         }
     }
+    
+    public static Usuario obtenerUsuario(String cuenta)
+    {
+        try {
+            return usuariodaosql.obtenerPorID(cuenta);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public static boolean acceder(String cuenta, String clave)
+    {
+        Usuario usuario = new Usuario(cuenta, clave, "", "");
+        try {
+            return usuariodaosql.autenticar(usuario);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 }
