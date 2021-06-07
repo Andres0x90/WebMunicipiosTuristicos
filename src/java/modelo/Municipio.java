@@ -5,7 +5,7 @@
  */
 package modelo;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -13,14 +13,15 @@ import java.util.Date;
  */
 public class Municipio 
 {
-    private String idmunicipio, nombre, descripcion, km_distancia, telefono, subregion;
+    private String idmunicipio, nombre, descripcion, telefono, subregion;
+    int km_distancia;
     private Date fecha;
     private Usuario usuario;
 
     public Municipio() {
     }
 
-    public Municipio(String idmunicipio, String nombre, String descripcion, String km_distancia, String telefono, String subregion, Date fecha, Usuario usuario) {
+    public Municipio(String idmunicipio, String nombre, String descripcion, int km_distancia, String telefono, String subregion, Date fecha, Usuario usuario) {
         this.idmunicipio = idmunicipio;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -55,11 +56,11 @@ public class Municipio
         this.descripcion = descripcion;
     }
 
-    public String getKm_distancia() {
+    public int getKm_distancia() {
         return km_distancia;
     }
 
-    public void setKm_distancia(String km_distancia) {
+    public void setKm_distancia(int km_distancia) {
         this.km_distancia = km_distancia;
     }
 

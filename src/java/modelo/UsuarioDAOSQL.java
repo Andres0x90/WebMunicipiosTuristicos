@@ -67,8 +67,10 @@ public class UsuarioDAOSQL implements UsuarioDAO
        ps.setString(1, usuario.getCuenta());
        ps.setString(2, usuario.getClave());
        rs = ps.executeQuery();
+       boolean encontrado = rs.next();
+       conn.close();
        
-       return rs.next();
+       return encontrado;
     }
 
 
