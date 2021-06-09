@@ -93,7 +93,7 @@
                             </select>
                         </div>
                         <div class="col-12 form-floating">
-                            <textarea class="form-control" name="descripcion" maxlength="500" placeholder="Escribe una descripcion del municipio"  id="descripcion" style="height: 100px"></textarea>
+                            <textarea class="form-control" name="descripcion" maxlength="500" placeholder="Escribe una descripcion del municipio"  id="descripcion" style="height: 180px"></textarea>
                           <label for="descripcion">Descripcion</label>
                         </div>
                         <div class="col-md-6">
@@ -116,7 +116,7 @@
                         <div class="col-12">
                             <div class="alert alert-success" role="alert">
                                 <p>Municipio registrado correctamente</p>
-                                <a href="aportes.jsp">Ver todos tus municipios registrados</a>
+                                <a href="municipiosRegistrados.jsp">Ver todos tus municipios registrados</a>
                             </div>
                         </div>
                         <% } else { %>

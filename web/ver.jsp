@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="col-12 form-floating">
                                     <textarea class="form-control" disabled name="descripcion" maxlength="500" placeholder="Escribe una descripcion del municipio"  
-                                              id="descripcion" style="height: 100px"><%= municipio.getDescripcion()%> </textarea>
+                                              id="descripcion" style="height: 180px"><%= municipio.getDescripcion()%> </textarea>
                                   <label for="descripcion">Descripcion</label>
                                 </div>
                                 <div class="col-md-4">
@@ -122,7 +122,7 @@
                         <%}else{ %>
                                 <div class="col-12">
                                     <div class="alert alert-danger" role="alert">
-                                        No se encontro ningun usuario con ese id
+                                        No se encontro ningun municipio con ese id
                                     </div>
                                 </div>
                             <% } %>
@@ -142,6 +142,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Core theme JS-->
 
-        <script src="js/comprobarRegistrarMunicipio.js"></script>
     </body>
 </html>

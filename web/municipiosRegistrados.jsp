@@ -4,12 +4,9 @@
     Author     : Andres
 --%>
 
-<%@page import="controlador.Controlador"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.Municipio"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.SQLException"%>
-<%@page import="modelo.Conexion"%>
+<%@page import="controlador.Controlador"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -19,20 +16,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Municipios Turisticos de Antioquia</title>
+        <title>Ver aportes - Municipios Turisticos de Antioquia</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
+
     </head>
     <body>
         <!-- Responsive navbar-->
-        <% if (request.getParameter("action") != null && request.getParameter("action").equalsIgnoreCase("logout")
-                && session.getAttribute("usuario") != null){
-            session.removeAttribute("usuario");
-        }    
-        %>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <img src="imgs/bandera.png" width="2%" class="m-2"/>
@@ -58,6 +51,7 @@
                                         <li><a class="dropdown-item" href="municipiosRegistrados.jsp">Ver aportes</a></li>
                                         <li><a class="dropdown-item" href="registrarMunicipio.jsp">Registrar municipio</a></li>
                                         <li><a class="dropdown-item" href="index.jsp?action=logout">Salir</a></li>
+
                                   <% }else{ %>
                                         <li><a class="dropdown-item" href="login.jsp">Ingresar</a></li>
                                         <li><a class="dropdown-item" href="registrar.jsp">Registrarse</a></li>
@@ -71,10 +65,16 @@
         <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-                <h1>Ver todos los municipios registrados</h1>
-                <p class="lead">Visualiza la lista completa de los municipios que tenemos registrados</p>
- 
-                <div class="row col-md-8 mx-auto my-2">
+                <h1>Ver mis municipios registrados</h1>
+                <p class="lead">Visualiza la lista de los municipios que has registrado</p>
+                
+                 <% if(session.getAttribute("usuario") == null){  %>
+                        <div class="alert alert-danger" role="alert">
+                            Necesita iniciar sesion para ingresar a esta pagina                   
+                        </div>
+                <%} else { %>  
+      
+                    <div class="row col-md-8 mx-auto my-3">
                             <table class="table table-striped">
                             <caption>Lista de municipios</caption>
                             <thead>
@@ -85,12 +85,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%! ArrayList<Municipio> municipios; %>
-                                <%  if (request.getParameter("subregion") != null)
-                                        municipios = Controlador.obtenerMunicipio("subregion", request.getParameter("subregion").toString());
-                                    else
-                                        municipios = Controlador.obtenerMunicipio("", null);
-                                
+                                <%  ArrayList<Municipio> municipios = Controlador.obtenerMunicipio("usuario", 
+                                        session.getAttribute("usuario").toString());
                                     if (municipios != null){
                                         for (Municipio municipio: municipios){ %>
                                         <tr>
@@ -102,33 +98,14 @@
                                     } %>
                             </tbody>
                       </table>
-                </div>
-                        <form action="index.jsp" method="GET" class="row col-md-4 mx-auto"> 
-                            
-                            <label for="subregion" class="form-label ">Subregion</label>
-                            <select class="form-select " name="subregion" id="subregion" aria-label="Subregion del municipio">
-                                <option selected></option>
-                                <option value="Valle de Aburra">Valle de Aburrá</option>
-                                <option value="Oriente">Oriente</option>
-                                <option value="Suroeste">Suroeste</option>
-                                <option value="Norte">Norte</option>
-                                <option value="Occidente">Occidente</option>
-                                <option value="Uraba">Urabá</option>
-                                <option value="Nordeste">Nordeste</option>
-                                <option value="Magdalena">Magdalena</option>
-                                <option value="Medio">Medio</option>
-                                <option value="Bajo Cauca">Bajo Cauca</option>
-                            </select>
-                        
-                        <div class="col-12 my-3">
-                            <button type="submit" onclick="return comprobar()" class="btn btn-dark col-4 float-end">Filtrar</button>
-                       </div>
-                    </form>  
+                    </div>
+                 <% } %>
+                 
             </div>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!-- Core theme JS-->
-        <script src="js/comprobarFiltroIndex.js"></script>
+
     </body>
 </html>
