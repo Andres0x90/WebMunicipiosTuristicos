@@ -14,6 +14,7 @@ import modelo.Usuario;
 import modelo.UsuarioDAO;
 import modelo.UsuarioDAOSQL;
 import java.sql.Date;
+import java.util.ArrayList;
 import modelo.Municipio;
 
 /**
@@ -75,5 +76,56 @@ public class Controlador
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+    
+    public static ArrayList<Municipio> obtenerMunicipio(String filtro, String valor)
+    {
+        ArrayList<Municipio> municipiosFiltrados = null;
+        
+        switch(filtro)
+        {
+            case "id":
+            {
+                try {
+                    municipiosFiltrados = new ArrayList<Municipio>();
+                    municipiosFiltrados.add(municipiodaosql.obtenerPorID(valor));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                 break;               
+            }
+            
+            case "subregion":
+            {
+                try {
+                    municipiosFiltrados = municipiodaosql.obtenerPorSubregion(valor);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            }
+
+            case "usuario":
+            {
+                try {
+                    municipiosFiltrados = municipiodaosql.obtenerPorUsuario(usuariodaosql.obtenerPorID(valor));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            }
+            
+            default:
+            {
+                try {
+                    municipiosFiltrados = municipiodaosql.obtenerTodos();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+                
+        }
+        
+        return municipiosFiltrados;
     }
 }
